@@ -44,15 +44,15 @@
             
             L.marker([33,131.0]).bindPopup('平面直角座標2系原点').addTo(map);
 
-            // // GeoJSON layer
-            // fetch('./test.geojson') // 非同期読み込み
-            //     .then((res) => res.json())
-            //     .then((json) => {
-            //         // making GeoJSON layer
-            //         L.geoJSON(json)
-            //             .bindPopup((layer) => layer.feature.properties.P29_004)
-            //             .addTo(map);
-            //     });
+            // GeoJSON layer
+            fetch('./gunma.geojson') // 非同期読み込み
+                .then((res) => res.json())
+                .then((json) => {
+                    // making GeoJSON layer
+                    L.geoJSON(json)
+                        .bindPopup((layer) => layer.feature.properties.P29_004)
+                        .addTo(map);
+                });
 
         </script>
     </body>
