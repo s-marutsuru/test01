@@ -54,6 +54,38 @@
                         .addTo(map);
                 });
 
+            // test of geojson how to 
+            const geojson2 = {
+                type: 'FeatureCollenction',
+                features: [
+                    {
+                        type: 'Feature',
+                        geometry: {
+                            type: 'Point',
+                            coordinates: [129.5,33]
+                        },
+                        properties: {
+                            name: '平面直角座標１系原点'
+                        }
+                    },
+                    {
+                        type: 'Feature',
+                        geometry: {
+                            type: 'Point'
+                            coodinates: [131.0, 33]
+                        },
+                        properties: {
+                            name: '平面直角座標2系原点'
+                        }
+                    },
+                ]
+            }
+            L.geoJSON(geojson2)
+                .bindPopup((layer) => layer.feature.properties.name)
+                .addTo(map);
+
+
+
         </script>
     </body>
 
