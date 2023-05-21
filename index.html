@@ -83,9 +83,6 @@
                     },
                 ]
             }
-            L.geoJSON(geojson2)
-                .bindPopup((layer) => layer.feature.properties.name)
-                .addTo(map);
 
             // marker cluster
             fetch('A32-21_46.geojson')
@@ -100,7 +97,9 @@
                     L.geoJSON(json).addTo(markers);
                 });
 
-
+            L.geoJSON(geojson2)
+                .bindPopup((layer) => layer.feature.properties.name)
+                .addTo(map);
 
 
         </script>
