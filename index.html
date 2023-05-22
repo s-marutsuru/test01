@@ -60,19 +60,6 @@
                         .addTo(map);
                 });
 
-            // marker cluster
-            fetch('P29-21_46.geojson')
-                .then((res) => res.json())
-                .then((json) => {
-                    const markers = L.markerClusterGroup()
-                        .binPopup(
-                            (layer) => layer.feature.properties.P29_004,
-                        )
-                        .addTo(map);
-                    // クラスタリングレイヤーにGeoJSONデータをセットする
-                    L.geoJSON(json).addTo(markers);
-                });
-
             // test of geojson how to 
             const geojson2 = {
                 type: 'FeatureCollection',
@@ -103,6 +90,30 @@
             L.geoJSON(geojson2)
                 .bindPopup((layer) => layer.feature.properties.name)
                 .addTo(map);
+
+      
+            var markers1 = L.markerClusterGroup();
+            for (var i = 0; i < 30; i++) {
+                var marker1 = L.marker([130.5 + (Math.random() / 10), 37.0 + (Math.random() / 10)]);
+                marker1.bindPopup("<b>Hello</b>");
+                markers1.addLayer(marker1);
+            }
+            map.addLayer(markers1);
+
+            // marker cluster
+            fetch('P29-21_46.geojson')
+                .then((res) => res.json())
+                .then((json) => {
+                    const markers = L.markerClusterGroup()
+                        .binPopup(
+                            (layer) => layer.feature.properties.P29_004,
+                        )
+                        .addTo(map);
+                    // クラスタリングレイヤーにGeoJSONデータをセットする
+                    L.geoJSON(json).addTo(markers);
+                });
+
+
 
         </script>
     </body>
