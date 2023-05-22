@@ -104,23 +104,9 @@
             fetch('./P29-21_46.geojson')
                 .then((res) => res.json())
                 .then((json) => {
-                    const markers = L.markerClusterGroup()
-                        .binPopup(
-                            (layer) => layer.feature.properties.P29_004,
-                        )
-                        .addTo(map);
+                    const markers = L.markerClusterGroup().addTo(map);
                     // クラスタリングレイヤーにGeoJSONデータをセットする
                     L.geoJSON(json).addTo(markers);
-                });
-
-            // GeoJSON layer
-            fetch('./gunma.geojson') // 非同期読み込み
-                .then((res) => res.json())
-                .then((json) => {
-                    // making GeoJSON layer
-                    L.geoJSON(json)
-                        .bindPopup((layer) => layer.feature.properties.P29_004)
-                        .addTo(map);
                 });
 
 
