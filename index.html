@@ -74,18 +74,18 @@
             // });
 
             // initialize background layer
-            const backgroundLayer = L.tileLayer(
-                // 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                'https://cyberjapandata.gsi.go.jp/xyz/seamlessphoto/{z}/{x}/{y}.jpg', // 地理院タイル空中写真
-                {
-                    maxZoom: 17,
-                    attribution:
- //                   '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-                    '<a href="https://maps.gsi.go.jp/development/ichiran.html">地理院タイル</a>'
-                },
-            );
-            // add map to instance layer
-            map.addLayer(backgroundLayer);
+//             const backgroundLayer = L.tileLayer(
+//                 // 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+//                 'https://cyberjapandata.gsi.go.jp/xyz/seamlessphoto/{z}/{x}/{y}.jpg', // 地理院タイル空中写真
+//                 {
+//                     maxZoom: 17,
+//                     attribution:
+//  //                   '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+//                     '<a href="https://maps.gsi.go.jp/development/ichiran.html">地理院タイル</a>'
+//                 },
+//             );
+//             // add map to instance layer
+//             map.addLayer(backgroundLayer);
 
             // maing circle
             L.circle([35.3627808, 138.7307908], {
