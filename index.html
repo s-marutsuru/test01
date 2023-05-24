@@ -119,7 +119,23 @@
                 {color: 'green'},
             ).bindPopup('i am polygon').addTo(map);
 
-
+            // 人工集中地区の読み込み
+            fetch('./A16-15_40_DID.geojson')
+                .then((res) => res.json())
+                .then((json) => {
+                    // GeoJSON layer
+                    const polygon = L.geoJSON(json, {
+                        style: (feature) => ({
+                            color: 'red',
+                            stroke: false,
+                            fillOpacity: feature.properties['人口']/feature.properties['面積']/20000,
+                        }),
+                    })
+                        .bindPopup((layer) => '人口: ' + layer.feature.properties['人口'],)
+                        .addTo(map);
+                    // add layer list
+                    layersControl.addOverlay(polygon, '人口集中地区');
+                });        
 
 
             // add pin
