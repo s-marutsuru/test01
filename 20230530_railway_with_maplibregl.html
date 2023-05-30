@@ -31,12 +31,6 @@
         <div id="map" style="height: 80vh;"></div>
         <script>
 
-            // vector tile で全国行政区の表示を行う
-            // http~~/index.htmlのhttp~~までの取得をする
-            const path = location.href.replace('./index.html', '');
-            // maplibreGLではtilepathはhttpから始まるfull pathである必要がある。
-            const vectortileUrl = '${path}/tiles/{z}/{x}/{y}.pbf';
-
             // maplibre instance initialize
             const map = new maplibregl.Map({
                 container: 'map',
@@ -56,11 +50,16 @@
                             maxzoom: 19,
                             attribution: '&copy; <a href="http://wwww.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
                         },
-                        admin: {
-                            type: 'vector', //vector tile
-                            tiles: [vectortileUrl],
-                            maxzoom: 8,
-                        },                        
+                        polygon: {
+                            type: 'geojson',
+                            data: './A16-15_40_DID.geojson',
+                            attribution: '<a href="https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-A16-v2_3.html">国土数値情報 - 人口集中地区データ</a>',
+                        },
+                        line: {
+                            type: 'geojson',
+                            data: './N02-21_RailroadSection.geojson',
+                            attribution: '<a href="https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N02-v3_0.html">国土数値情報 - 鉄道データ</a>',
+                        },
                     },
                     layers: [
                         {
@@ -69,16 +68,44 @@
                             type: 'raster',
                         },
                         {
-                            id: 'admin-layer',
-                            source: 'admin',
-                            'source-layer': 'admin',
+                            id: 'polygon-layer',
+                            source: 'polygon',
                             type: 'fill',
                             paint: {
-                                'fill-color': '#fa0',
-                                'fill-opacity': 0.5,
-                                'fill-outline-color': '#00f',
+                                'fill-color': [
+                                    'rgba', 255, 0, 0,
+                                    ['min', 1, ['/', ['/', ['get', '人口'], ['get', '面積']], 20000]],
+                                ],
                             },
-                        }
+                        },
+                        {
+                            id: 'line-layer',
+                            source: 'line',
+                            type: 'line',
+                            paint: {
+                                'line-color': [
+                                    'case',
+                                    ['==', ['get', 'N02_002'], '1'], 'green',
+                                    ['==', ['get', 'N02_002'], '2'], '#00f',
+                                    ['==', ['get', 'N02_002'], '3'], '#ff0000',                                    
+                                    ['==', ['get', 'N02_002'], '4'], '#ffaa00',
+                                    ['==', ['get', 'N02_002'], '5'], '#aa00ff',
+                                    '#000000',
+                                ],
+                                'line-width': [
+                                    'case',
+                                    ['==', ['get', 'N02_002'], '1'], 10,
+                                    ['==', ['get', 'N02_002'], '2'], 7,
+                                    ['==', ['get', 'N02_002'], '3'], 4,                                    
+                                    ['==', ['get', 'N02_002'], '4'], 4,
+                                    ['==', ['get', 'N02_002'], '5'], 4,
+                                    0,
+                                ],
+                            },
+                            layout: {
+                                'line-cap': 'round',
+                            },
+                        },
                     ],
                 },
             });
