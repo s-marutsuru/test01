@@ -33,9 +33,12 @@
 
             // vector tile で全国行政区の表示を行う
             // http~~/index.htmlのhttp~~までの取得をする
-            const path = location.href.replace('./index.html', '');
+            const pathtmp = location.href;
+            const path = pathtmp.replace('/index.html', '');
             // maplibreGLではtilepathはhttpから始まるfull pathである必要がある。
-            const vectortileUrl = '${path}/tiles/{z}/{x}/{y}.pbf';
+            const pathtmp2 = '/tiles/{z}/{x}/{y}.pbf'
+//            const vectortileUrl = '${path}/tiles/{z}/{x}/{y}.pbf';
+            const vectortileUrl = path + pathtmp2;
 
             // maplibre instance initialize
             const map = new maplibregl.Map({
@@ -83,6 +86,10 @@
                 },
             });
 
+            // L.tileLayer(vectortileUrl,{attribution:""}).addTo(map);
+            console.log(path + pathtmp2);
+            console.log(vectortileUrl);
+            alert(vectortileUrl);
 
             // // maplibre instance initialize
             // const map = new maplibregl.Map({
