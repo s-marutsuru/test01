@@ -86,23 +86,23 @@
                 },
             });
 
-            map.on('click', (e) => {
-                alert('clicked')
-            });
-
-            // クリック地点の地物の情報を取得する
             // map.on('click', (e) => {
-            //     // "admin-layer"から地物を取得
-            //     const features = map.queryRenderedFeatures(e.point, {
-            //         layers: ['admin-layer'],
-            //     });
-            //     if (feature.length == 0) return;
-
-            //     const feature = features[0];
-            //     alert(
-            //         '${feature.properties.N03_007}: ${feature.properties.N03_001}${feature.properties.N03_004}'
-            //         ,);
+            //     alert('clicked')
             // });
+
+            //クリック地点の地物の情報を取得する
+            map.on('click', (e) => {
+                // "admin-layer"から地物を取得
+                const features = map.queryRenderedFeatures(e.point, {
+                    layers: ['admin-layer'],
+                });
+                if (features.length == 0) return;
+
+                const feature = features[0];
+                alert(
+                    '${feature.properties.N03_007}: ${feature.properties.N03_001}${feature.properties.N03_004}'
+                    ,);
+            });
 
 
             // L.tileLayer(vectortileUrl,{attribution:""}).addTo(map);
