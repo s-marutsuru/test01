@@ -40,30 +40,38 @@
 //            const vectortileUrl = '${path}/tiles/{z}/{x}/{y}.pbf';
             const vectortileUrl = path + pathtmp2;
 
+            // generate raster tile path
+            const tmp1 = location.href;
+            const tilepath = '/tiles/{z}/{x}/{y}.png'
+            const rastertileurl = tmp1.replace('/index.html', '') + tilepath;
+//            alert(rastertileurl);
+
             // maplibre instance initialize
             const map = new maplibregl.Map({
                 container: 'map',
                 center: [135.1, 35.0],
-                zoom: 7,
+                zoom: 0,
                 style: {
-                    // maplibre-style
                     version: 8,
                     sources: {
-                        // 地図で使うデータを定義
-                        osm: {
+                        naturalearth: {
                             type: 'raster',
-                            tiles: [
-                                'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                            ],
+                            tiles: [rastertileurl],
                             tileSize: 256,
-                            maxzoom: 19,
-                            attribution: '&copy; <a href="http://wwww.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                            maxzoom: 5,
+                            attribution: '<a href="https://www.naturalearthdata.com/">Natural Earth</a>',
                         },
-                        admin: {
-                            type: 'vector', //vector tile
-                            tiles: [vectortileUrl],
-                            maxzoom: 8,
-                        },
+                        // 地図で使うデータを定義
+                        // osm: {
+                        //     type: 'raster',
+                        //     tiles: [
+                        //         'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                        //     ],
+                        //     tileSize: 256,
+                        //     maxzoom: 19,
+                        //     attribution: '&copy; <a href="http://wwww.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                        // },
+
                         lakebiwa: {
                             type: 'image',
                             url: './lakebiwa.jpg',
@@ -77,21 +85,16 @@
                     },
                     layers: [
                         {
-                            id: 'osm-layer',
-                            source: 'osm',
+                            id: 'naturalearth-layer',
+                            source: 'naturalearth',
                             type: 'raster',
                         },
-                        {
-                            id: 'admin-layer',
-                            source: 'admin',
-                            'source-layer': 'admin',
-                            type: 'fill',
-                            paint: {
-                                'fill-color': '#fa0',
-                                'fill-opacity': 0.5,
-                                'fill-outline-color': '#00f',
-                            },
-                        },
+                        // {
+                        //     id: 'osm-layer',
+                        //     source: 'osm',
+                        //     type: 'raster',
+                        // },
+
                         {
                             id: 'lakebiwa-layer',
                             source: 'lakebiwa',
@@ -105,122 +108,7 @@
             });
 
             
-            // map.on('click', (e) => {
-            //     alert('clicked')
-            // });
-
-            // //クリック地点の地物の情報を取得する
-            // map.on('click', (e) => {
-            //     // "admin-layer"から地物を取得
-            //     const features = map.queryRenderedFeatures(e.point, {
-            //         layers: ['admin-layer'],
-            //     });
-            //     if (features.length == 0) return;
-
-            //     const feature = features[0];
-            //     alert(
-            //         feature.properties.N03_007 + ':' + feature.properties.N03_001 + feature.properties.N03_004
-            //         ,);                
-            //     // alert(
-            //     //     '${feature.properties.N03_007}: ${feature.properties.N03_001}${feature.properties.N03_004}'
-            //     //     ,);
-            // });
-
-            // leafletで琵琶湖の画像表示
-            // const imageLayer = L.imageOverlay('./lakebiwa.jpg',
-            //     [
-            //         [135.5966438368833, 35.54988360256081],
-            //         [136.5823028110609, 34.92814763059977],
-            //     ],
-            //     {opacity:0.7},
-            //     );
-            //     map.addLayer(imageLayer);
-
-
-            // L.tileLayer(vectortileUrl,{attribution:""}).addTo(map);
-            // console.log(path + pathtmp2);
-            // console.log(vectortileUrl);
-            // alert(vectortileUrl);
-
-            // // maplibre instance initialize
-            // const map = new maplibregl.Map({
-            //     container: 'map',
-            //     center: [137.1, 36.5],
-            //     zoom: 4,
-            //     style: {
-            //         // maplibre-style
-            //         version: 8,
-            //         sources: {
-            //             // 地図で使うデータを定義
-            //             osm: {
-            //                 type: 'raster',
-            //                 tiles: [
-            //                     'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-            //                 ],
-            //                 tileSize: 256,
-            //                 maxzoom: 19,
-            //                 attribution: '&copy; <a href="http://wwww.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-            //             },
-            //             polygon: {
-            //                 type: 'geojson',
-            //                 data: './A16-15_40_DID.geojson',
-            //                 attribution: '<a href="https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-A16-v2_3.html">国土数値情報 - 人口集中地区データ</a>',
-            //             },
-            //             line: {
-            //                 type: 'geojson',
-            //                 data: './N02-21_RailroadSection.geojson',
-            //                 attribution: '<a href="https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N02-v3_0.html">国土数値情報 - 鉄道データ</a>',
-            //             },
-            //         },
-            //         layers:[
-            //             {
-            //                 id: 'osm-layer',
-            //                 source: 'osm',
-            //                 type: 'raster',
-            //             },
-            //             {
-            //                 id: 'polygon-layer',
-            //                 source: 'polygon',
-            //                 type: 'fill',
-            //                 paint: {
-            //                     'fill-color': [
-            //                         'rgba', 255, 0, 0,
-            //                         ['min', 1, ['/'], ['/', ['get', '人口'], ['get', '面積']],],
-            //                     ],
-            //                 },
-            //             },
-            //             {
-            //                 id: 'line-layer',
-            //                 source: 'line',
-            //                 type: 'line',
-            //                 paint: {
-            //                     'line-color': [
-            //                         'case',
-            //                         ['==', ['get', 'N02_002'], '1'], 'green',
-            //                         ['==', ['get', 'N02_002'], '2'], '#00f',
-            //                         ['==', ['get', 'N02_002'], '3'], '#ff0000',                                    
-            //                         ['==', ['get', 'N02_002'], '4'], '#ffaa00',
-            //                         ['==', ['get', 'N02_002'], '5'], '#aa00ff',
-            //                         '#000000',
-            //                     ],
-            //                     'line-width': [
-            //                         'case',
-            //                         ['==', ['get', 'N02_002'], '1'], 10,
-            //                         ['==', ['get', 'N02_002'], '2'], 7,
-            //                         ['==', ['get', 'N02_002'], '3'], 4,                                    
-            //                         ['==', ['get', 'N02_002'], '4'], 4,
-            //                         ['==', ['get', 'N02_002'], '5'], 4,
-            //                         0,
-            //                     ],
-            //                 },
-            //                 layout: {
-            //                     'line-cap': 'round',
-            //                 },
-            //             },
-            //         ],
-            //     },
-            // });
-
+            
 
 
         </script>
