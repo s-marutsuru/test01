@@ -68,7 +68,7 @@
                         },
                         school:{
                             type: 'geojson',
-                            data: './P29-21_46.geojson',
+                            data: './P29-21.geojson',
                             attribution:'<a>国土数値情報 - 学校データ</a>'
                         },
                         lakebiwa: {
@@ -84,6 +84,14 @@
                     },
                     // definition of layer
                     layers: [
+                        {
+                            // 背景色
+                            id: 'background',
+                            type: 'background',
+                            paint: {
+                                'background-color': '#555', //グレー
+                            },
+                        }
                         // {
                         //     // 背景色
                         //     id: 'background',
