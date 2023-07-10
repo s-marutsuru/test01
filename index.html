@@ -91,15 +91,44 @@
                             paint: {
                                 'background-color': '#555', //グレー
                             },
-                        }
-                        // {
-                        //     // 背景色
-                        //     id: 'background',
-                        //     type: 'background',
-                        //     paint: {
-                        //         'background-color' : '#555', //グレー
-                        //     },
-                        // },
+                        },
+                        //osm
+                        {
+                            id: 'osm-layer',
+                            source: 'osm',
+                            type: 'raster',
+                            minzoom: 10,
+                            // zoom level 10 -> 14 でopacityかえる。中間は補間しますよ
+                            paint: {
+                                'raster-opacity':[
+                                    'interpolate',
+                                    ['linear'],
+                                    ['zoom'],
+                                    10,
+                                    0,
+                                    14,
+                                    0.7,
+                                ],
+                            },
+                        },
+                        // 行政区layer
+                        {
+                            id: 'admin-layer',
+                            source: 'admin',
+                            'source-layer': 'admin',
+                            type: 'fill',
+                            paint: {
+                                'fill-color': '#6a3',
+                                'fill-opacity': [
+                                    'interpolate',
+                                    ['linear'],
+                                    ['zoom'],
+                                    10, 0.7, 14, 0.3,
+                                ],
+                            },
+                        },
+
+                        
                         // {
                         //     id: 'osm-layer',
                         //     source: 'osm',
