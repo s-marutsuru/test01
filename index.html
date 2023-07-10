@@ -84,14 +84,7 @@
                     },
                     // definition of layer
                     layers: [
-                        {
-                            // 背景色
-                            id: 'background',
-                            type: 'background',
-                            paint: {
-                                'background-color': '#555', //グレー
-                            },
-                        },
+
                         //osm
                         {
                             id: 'osm-layer',
@@ -128,25 +121,6 @@
                             },
                         },
 
-                        
-                        // {
-                        //     id: 'osm-layer',
-                        //     source: 'osm',
-                        //     type: 'raster',
-                        //     minzoom: 10,
-                        //     paint: {
-                        //         'raster-opacity': [
-                        //             'interpolate',
-                        //             ['linear'],
-                        //             ['zoom'],
-                        //             10,
-                        //             0,
-                        //             14,
-                        //             0.7,
-                        //         ],                                
-                        //     },
-                        // },
-       
                         {
                             id: 'lakebiwa-layer',
                             source: 'lakebiwa',
@@ -155,6 +129,15 @@
                                 'raster-opacity' : 0.7,
                             },
                         },
+                        // {
+                        //     // 背景色
+                        //     id: 'background',
+                        //     type: 'background',
+                        //     paint: {
+                        //         'background-color': '#555', //グレー
+                        //     },
+                        // },
+
                     ],
                 },
             });
