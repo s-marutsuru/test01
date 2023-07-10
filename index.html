@@ -40,12 +40,6 @@
 //            const vectortileUrl = '${path}/tiles/{z}/{x}/{y}.pbf';
             const vectortileUrl = path + pathtmp2;
 
-            // generate raster tile path
-            const tmp1 = location.href;
-            const tilepath = '/tiles2/{z}/{x}/{y}.png'
-            const rastertileurl = tmp1.replace('/index.html', '') + tilepath;
-//            alert(rastertileurl);
-
             // maplibre instance initialize
             const map = new maplibregl.Map({
                 container: 'map',
@@ -54,24 +48,29 @@
                 style: {
                     version: 8,
                     sources: {
-                        naturalearth: {
-                            type: 'raster',
-                            tiles: [rastertileurl],
-                            tileSize: 256,
-                            maxzoom: 5,
-                            attribution: '<a href="https://www.naturalearthdata.com/">Natural Earth</a>',
-                        },
-                        // 地図で使うデータを定義
-                        // osm: {
-                        //     type: 'raster',
-                        //     tiles: [
-                        //         'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                        //     ],
-                        //     tileSize: 256,
-                        //     maxzoom: 19,
-                        //     attribution: '&copy; <a href="http://wwww.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-                        // },
 
+                        osm:{
+                            type: 'raster',
+                            tiles: [
+                                'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                            ],
+                            tileSize: 256,
+                            maxzoom: 18,
+                            attribution: '&copy; <a href="http://wwww.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                        },
+                        admin: {
+                            type: 'vector',
+                            tile: [
+                                vectortileUrl,
+                            ],
+                            maxzoom: 8,
+                            attribution:'<a>国土数値情報 - 行政区kデータ</a>'
+                        },
+                        school:{
+                            type: 'geojson',
+                            data: './P29-21_46.geojson',
+                            attribution:'<a>国土数値情報 - 学校データ</a>'
+                        },
                         lakebiwa: {
                             type: 'image',
                             url: './lakebiwa.jpg',
@@ -83,18 +82,34 @@
                             ],
                         },                        
                     },
+                    // definition of layer
                     layers: [
-                        {
-                            id: 'naturalearth-layer',
-                            source: 'naturalearth',
-                            type: 'raster',
-                        },
+                        // {
+                        //     // 背景色
+                        //     id: 'background',
+                        //     type: 'background',
+                        //     paint: {
+                        //         'background-color' : '#555', //グレー
+                        //     },
+                        // },
                         // {
                         //     id: 'osm-layer',
                         //     source: 'osm',
                         //     type: 'raster',
+                        //     minzoom: 10,
+                        //     paint: {
+                        //         'raster-opacity': [
+                        //             'interpolate',
+                        //             ['linear'],
+                        //             ['zoom'],
+                        //             10,
+                        //             0,
+                        //             14,
+                        //             0.7,
+                        //         ],                                
+                        //     },
                         // },
-
+       
                         {
                             id: 'lakebiwa-layer',
                             source: 'lakebiwa',
