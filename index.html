@@ -48,14 +48,13 @@
                 style: {
                     version: 8,
                     sources: {
-
-                        osm:{
+                        osm: {
                             type: 'raster',
                             tiles: [
                                 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                             ],
                             tileSize: 256,
-                            maxzoom: 18,
+                            maxzoom: 19,
                             attribution: '&copy; <a href="http://wwww.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
                         },
                         admin: {
@@ -64,7 +63,7 @@
                                 vectortileUrl,
                             ],
                             maxzoom: 8,
-                            attribution:'<a>国土数値情報 - 行政区kデータ</a>'
+                            attribution:'<a>国土数値情報 - 行政区データ</a>'
                         },
                         school:{
                             type: 'geojson',
@@ -85,25 +84,25 @@
                     // definition of layer
                     layers: [
 
-                        //osm
                         {
                             id: 'osm-layer',
                             source: 'osm',
                             type: 'raster',
-                            minzoom: 10,
-                            // zoom level 10 -> 14 でopacityかえる。中間は補間しますよ
+                            minizoom: 10,
+                            // zoom level でopacity変えるけど補間しますよ
                             paint: {
                                 'raster-opacity':[
                                     'interpolate',
-                                    ['linear'],
-                                    ['zoom'],
-                                    10,
-                                    0,
-                                    14,
-                                    0.7,
+                                     ['linear'],
+                                     ['zoom'], 
+                                     10, 
+                                     0.5, 
+                                     14, 
+                                     0.9,
                                 ],
                             },
                         },
+
                         // 行政区layer
                         {
                             id: 'admin-layer',
@@ -111,14 +110,19 @@
                             'source-layer': 'admin',
                             type: 'fill',
                             paint: {
-                                'fill-color': '#6a3',
-                                'fill-opacity': [
-                                    'interpolate',
-                                    ['linear'],
-                                    ['zoom'],
-                                    10, 0.7, 14, 0.3,
-                                ],
+                                'fill-color': '#fa0',
+                                'fill-opacity': 0.5,
+                                'fill-outline-color': '#00f',
                             },
+                            // paint: {
+                            //     'fill-color': '#6a3',
+                            //     'fill-opacity': [
+                            //         'interpolate',
+                            //         ['linear'],
+                            //         ['zoom'],
+                            //         10, 0.7, 14, 0.3,
+                            //     ],
+                            // },
                         },
 
                         {
@@ -129,15 +133,6 @@
                                 'raster-opacity' : 0.7,
                             },
                         },
-                        // {
-                        //     // 背景色
-                        //     id: 'background',
-                        //     type: 'background',
-                        //     paint: {
-                        //         'background-color': '#555', //グレー
-                        //     },
-                        // },
-
                     ],
                 },
             });
