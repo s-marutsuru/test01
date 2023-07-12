@@ -40,11 +40,12 @@
 //            const vectortileUrl = '${path}/tiles/{z}/{x}/{y}.pbf';
             const vectortileUrl = path + pathtmp2;
 
+//            alert(vectortileUrl)
             // maplibre instance initialize
             const map = new maplibregl.Map({
                 container: 'map',
                 center: [135.1, 35.0],
-                zoom: 0,
+                zoom: 4,
                 style: {
                     version: 8,
                     sources: {
