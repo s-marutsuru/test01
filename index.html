@@ -129,7 +129,7 @@
                             'source-layer': 'admin',
                             type: 'line',
                             paint: {
-                                'line-color': '#FD7E00',
+                                'line-color': '#6a3',
                                 'line-width': 4,
                             },
                         },
@@ -150,6 +150,33 @@
                                     0, 'rgba(0,0,0,0)',
                                     0.5, 'rgba(255,200,0,1)',
                                     1.0, 'rgba(255,240,200,1)',
+                                ],
+                            },
+                        },
+                        // 学校をcircleで表す zoom level 8から表示し、拡大すると濃くなるよう補間する
+                        {
+                            id: 'school-circle-layer',
+                            source: 'school',
+                            type: 'circle',
+                            minizoom: 8,
+                            paint: {
+                                'circle-color': [
+                                    'interpolate',
+                                    ['linear'],
+                                    ['get', 'P29_003'], //学校種別コード このgetはメソッドか
+                                    16001, '#f00', // 小学校がred
+                                    16002, '#0f0', // 中学校 青
+                                    16003, '#0f0', //                                     
+                                    16004, '#00f', // 高校　青 
+                                    16005, 'orange', // その他　オレンジ                                                                       
+                                ],
+                                'circle-opacity': [
+                                    'interpolate',
+                                    ['linear'],
+                                    ['zoom'],
+                                    8, 0.0, //zoom level 8 -> opacity 0
+                                    9, 0.1, //zoom level 9 -> opacity 0.1
+                                    14, 1.0, //zoom level 14 -> opacity 1.0
                                 ],
                             },
                         },
