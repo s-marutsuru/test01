@@ -48,6 +48,8 @@
                 zoom: 4,
                 style: {
                     version: 8,
+                    // import SIL OpenFontLicense
+                    glyphs: './fonts/{fontstack}/{range}.pbf',
                     sources: {
                         osm: {
                             type: 'raster',
@@ -64,7 +66,7 @@
                                 vectortileUrl,
                             ],
                             maxzoom: 8,
-                            attribution:'<a>国土数値情報 - 行政区データ 4</a>'
+                            attribution:'<a>国土数値情報 - 行政区データ 5</a>'
                         },
                         school:{
                             type: 'geojson',
@@ -178,6 +180,25 @@
                                     9, 0.1, //zoom level 9 -> opacity 0.1
                                     14, 1.0, //zoom level 14 -> opacity 1.0
                                 ],
+                            },
+                        },
+
+                        // add school label
+                        {
+                            id: 'school-label-layer',
+                            source: 'school',
+                            type: 'symbol',
+                            minzoom:12,
+                            layout: {
+                                'text-field': ['get', 'P29_004'],
+                                'text-font': ['Noto Sans CJK JP Bold'],
+                                'text-offset': [0, 0.5],
+                                'text-anchor': 'top',
+                                'text-size': ['interpolate', ['linear'],['zoom'], 10, 8, 14, 14,],
+                            },
+                            paint: {
+                                'text-halo-with': 1,
+                                'text-halo-color': '#fff',
                             },
                         },
 
