@@ -64,7 +64,7 @@
                                 vectortileUrl,
                             ],
                             maxzoom: 8,
-                            attribution:'<a>国土数値情報 - 行政区データ 3</a>'
+                            attribution:'<a>国土数値情報 - 行政区データ 4</a>'
                         },
                         school:{
                             type: 'geojson',
@@ -131,6 +131,18 @@
                             paint: {
                                 'line-color': '#FD7E00',
                                 'line-width': 4,
+                            },
+                        },
+
+                        // school display with heatmap
+                        {
+                            id: 'school-heatmap-layer',
+                            source: 'school',
+                            type: 'heatmap',
+                            maxzoom: 12,
+                            paint: {
+                                'heatmap-weight': 0.01,
+                                'heatmap-opacity': 0.7,
                             },
                         },
 
