@@ -121,6 +121,19 @@
                             },
                         },
 
+                        // 行政区に境界線を表示する
+                        // 1つのソースから複数のレイヤーを作成できるメリットがある
+                        {
+                            id: 'admin-outline-layer',
+                            source: 'admin',
+                            'soutce-layer': 'admin',
+                            type: 'line',
+                            paint: {
+                                'line-color': '#FD7E00',
+                                'line-width': 4,
+                            },
+                        },
+
                         {
                             id: 'lakebiwa-layer',
                             source: 'lakebiwa',
