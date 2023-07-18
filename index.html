@@ -49,8 +49,8 @@
                 style: {
                     version: 8,
                     // import SIL OpenFontLicense
-//                    glyphs: './fonts/{fontstack}/{range}.pbf',
-                    glyphs: 'https://glyphs.geolonia.com/{fontstack}/{range}.pbf',
+                    glyphs: './fonts/{fontstack}/{range}.pbf',
+                    //glyphs: 'https://glyphs.geolonia.com/{fontstack}/{range}.pbf',
                     sources: {
                         osm: {
                             type: 'raster',
@@ -198,7 +198,7 @@
                                 'text-size': ['interpolate', ['linear'],['zoom'], 10, 8, 14, 14,],
                             },
                             paint: {
-                                'text-halo-with': 1,
+                                'text-halo-width': 1,
                                 'text-halo-color': '#fff',
                             },
                         },
