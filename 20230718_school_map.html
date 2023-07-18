@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>sample of gis application</title>
+        <!-- LeafletのCSSの読み込み -->
+        <link 
+            rel="stylesheet"
+            href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+            integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+            crossorigin=""
+        />
+        <!-- LeafletのJavaScript読み込み -->
+        <script 
+            src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+            integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+            crossorigin=""
+        ></script>
+
+        <!-- Leaflet markercluster -->        
+        <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.css" />
+        <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.Default.css" />
+        <script src="https://unpkg.com/leaflet.markercluster@1.3.0/dist/leaflet.markercluster.js"></script>
+
+        <!-- MapLibre GL JSを読み込み -->
+        <script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
+        <link rel="stylesheret" href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css" />
+
+    </head>
+    <body>
+        <!-- 地図を表示するdiv要素を宣言 -->
+        <div id="map" style="height: 80vh;"></div>
+        <script>
+
+            // vector tile で全国行政区の表示を行う
+            // http~~/index.htmlのhttp~~までの取得をする
+            const pathtmp = location.href;
+            const path = pathtmp.replace('/index.html', '');
+            // maplibreGLではtilepathはhttpから始まるfull pathである必要がある。
+            const pathtmp2 = '/tiles/{z}/{x}/{y}.pbf'
+//            const vectortileUrl = '${path}/tiles/{z}/{x}/{y}.pbf';
+            const vectortileUrl = path + pathtmp2;
+
+//            alert(vectortileUrl)
+            // maplibre instance initialize
+            const map = new maplibregl.Map({
+                container: 'map',
+                center: [135.1, 35.0],
+                zoom: 4,
+                style: {
+                    version: 8,
+                    // import SIL OpenFontLicense
+                    glyphs: './fonts/{fontstack}/{range}.pbf',
+                    //glyphs: 'https://glyphs.geolonia.com/{fontstack}/{range}.pbf',
+                    sources: {
+                        osm: {
+                            type: 'raster',
+                            tiles: [
+                                'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                            ],
+                            tileSize: 256,
+                            maxzoom: 19,
+                            attribution: '&copy; <a href="http://wwww.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                        },
+                        admin: {
+                            type: 'vector',
+                            tiles: [
+                                vectortileUrl,
+                            ],
+                            maxzoom: 8,
+                            attribution:'<a>国土数値情報 - 行政区データ 6</a>'
+                        },
+                        school:{
+                            type: 'geojson',
+                            data: './P29-21.geojson',
+                            attribution:'<a>国土数値情報 - 学校データ</a>'
+                        },
+                        lakebiwa: {
+                            type: 'image',
+                            url: './lakebiwa.jpg',
+                            coordinates: [
+                                [135.596438368833077, 35.5498836025608185], // 左上
+                                [136.5823028110609414, 35.5498836025608185], // 右上
+                                [136.5823028110609414, 34.9281476305997742], // 右下
+                                [135.596438368833077, 34.9281476305997742], // 左下
+                            ],
+                        },                        
+                    },
+                    // definition of layer
+                    layers: [
+
+                        {
+                            id: 'osm-layer',
+                            source: 'osm',
+                            type: 'raster',
+                            minizoom: 10,
+                            // zoom level でopacity変えるけど補間しますよ
+                            paint: {
+                                'raster-opacity':[
+                                    'interpolate',
+                                     ['linear'],
+                                     ['zoom'], 
+                                     10, 
+                                     0.5, 
+                                     14, 
+                                     0.9,
+                                ],
+                            },
+                        },
+
+                        // 行政区layer
+                        {
+                            id: 'admin-layer',
+                            source: 'admin',
+                            'source-layer': 'admin',
+                            type: 'fill',
+                            paint: {
+                                'fill-color': '#6a3',
+                                'fill-opacity': [
+                                    'interpolate',
+                                    ['linear'],
+                                    ['zoom'],
+                                    8, 0.6, 14, 0.2,
+                                ],
+                            },
+                        },
+
+                        // 行政区に境界線を表示する
+                        // 1つのソースから複数のレイヤーを作成できるメリットがある
+                        {
+                            id: 'admin-outline-layer',
+                            source: 'admin',
+                            'source-layer': 'admin',
+                            type: 'line',
+                            paint: {
+                                'line-color': '#6a3',
+                                'line-width': 4,
+                            },
+                        },
+
+                        // school display with heatmap
+                        {
+                            id: 'school-heatmap-layer',
+                            source: 'school',
+                            type: 'heatmap',
+                            maxzoom: 12,
+                            paint: {
+                                'heatmap-weight': 0.01,
+                                'heatmap-opacity': 0.7,
+                                'heatmap-color': [
+                                    'interpolate',
+                                    ['linear'],
+                                    ['heatmap-density'],
+                                    0, 'rgba(0,0,0,0)',
+                                    0.5, 'rgba(255,200,0,1)',
+                                    1.0, 'rgba(255,240,200,1)',
+                                ],
+                            },
+                        },
+                        // 学校をcircleで表す zoom level 8から表示し、拡大すると濃くなるよう補間する
+                        {
+                            id: 'school-circle-layer',
+                            source: 'school',
+                            type: 'circle',
+                            minizoom: 8,
+                            paint: {
+                                'circle-color': [
+                                    'interpolate',
+                                    ['linear'],
+                                    ['get', 'P29_003'], //学校種別コード このgetはメソッドか
+                                    16001, '#f00', // 小学校がred
+                                    16002, '#0f0', // 中学校 青
+                                    16003, '#0f0', //                                     
+                                    16004, '#00f', // 高校　青 
+                                    16005, 'orange', // その他　オレンジ                                                                       
+                                ],
+                                'circle-opacity': [
+                                    'interpolate',
+                                    ['linear'],
+                                    ['zoom'],
+                                    8, 0.0, //zoom level 8 -> opacity 0
+                                    9, 0.1, //zoom level 9 -> opacity 0.1
+                                    14, 1.0, //zoom level 14 -> opacity 1.0
+                                ],
+                            },
+                        },
+
+                        // add school label
+                        {
+                            id: 'school-label-layer',
+                            source: 'school',
+                            type: 'symbol',
+                            minzoom: 12,
+                            layout: {
+                                'text-field': ['get', 'P29_004'],
+                                'text-font': ['Noto Sans CJK JP Bold'],
+                                'text-offset': [0, 0.5],
+                                'text-anchor': 'top',
+                                'text-size': ['interpolate', ['linear'],['zoom'], 10, 8, 14, 14,],
+                            },
+                            paint: {
+                                'text-halo-width': 1,
+                                'text-halo-color': '#fff',
+                            },
+                        },
+
+                        {
+                            id: 'lakebiwa-layer',
+                            source: 'lakebiwa',
+                            type: 'raster',
+                            paint: {
+                                'raster-opacity' : 0.7,
+                            },
+                        },
+                    ],
+                },
+            });
+
+            
+            
+
+
+        </script>
+    </body>
+
+</html>
